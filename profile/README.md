@@ -39,7 +39,7 @@
         <b>서하나</b>
       </a>
       <br />
-        Security<br /> User<br /> Ranking<br /> Search<br /> Admin<br /> AI Recommendation
+        <sub>Security<br /> User<br /> Ranking<br /> Search<br /> Admin<br /> AI Recommendation</sub>
     </td>
     <td align="center" width="150px">
       <a href="https://github.com/eNoLJ">
