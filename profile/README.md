@@ -16,10 +16,9 @@
 <table>
   <tr height="160px">
     <td align="center" width="150px">
+      <b>팀장</b>
       <a href="https://github.com/MinWoo1995">
         <img height="110px" width="110px" src="https://github.com/MinWoo1995.png" alt="팀장 프로필"/>
-        <br />
-        <b>팀장</b>
         <br />
         <b>전민우</b>
       </a>
