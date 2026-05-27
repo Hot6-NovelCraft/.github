@@ -26,12 +26,12 @@
         <b>전민우</b>
       </a>
       <br />
-        Mentor
-      Calender
-      Library
-      Revenue
-      Event
-      Exchange
+        Mentor<br />
+      Calender<br />
+      Library<br />
+      Revenue<br />
+      Event<br />
+      Exchange<br />
       AI Cover
     </td>
     <td align="center" width="150px">
