@@ -694,6 +694,171 @@ public ResponseEntity<...> createFeedbackV2(...) {
 
 </details>
 
+<details>
+<summary><b>서하나 - 신작 소설 조회 트래픽 병목 방어</b></summary>
+<aside>
+
+
+## **💡배경**
+
+</aside>
+
+웹소설 플랫폼 특성상 메인 페이지의 '신작 소설 목록'은 사용자가 가장 먼저, 그리고 가장 많이 접근하여 트래픽이 집중되는 핵심 기능이라고 생각한다.
+
+초기 구현 시에는 단순 JPA 메서드와 Redis 캐싱만을 활용하여 "최근 30일 이내 생성된 소설"을 조회하도록 기능을 구현해두었던게 발단이었다.
+
+<aside>
+
+
+## 🚨문제 상황
+
+</aside>
+
+테스트 및 튜터링(멘토링) 과정에서 
+
+> "현재는 데이터가 적어 빠르지만, 서비스가 성장하여 소설 데이터가 수십~수백만 건으로 쌓이게 되면 병목이 발생할 것"
+> 
+
+이라는 피드백을 받아 기존 코드를 분석해보니 `is_deleted=false, status='ONGOING', created_at >= 30일` 등의 조회 조건은 걸려 있었으나, **적절한 인덱스를 타지 못해 데이터베이스 전체를 뒤지는 Full Table Scan**이 발생할 위험이 있었다.
+
+<aside>
+
+
+## 💭가설
+
+</aside>
+
+1. 데이터베이스 계층의 인덱스 부재가 대용량 데이터 조회 시 가장 큰 성능 저하 요인이 될 것이다.
+2. 메인 페이지의 신작 목록은 실시간성(초 단위)이 극도로 요구되지 않아 DB 조회 횟수를 최소화하고 캐싱을 적극적으로 활용하면 성능을 안정적으로 유지할 수 있을 것이다.
+3. 성능 최적화는 한 번에 오버엔지니어링(예: 샤딩 도입)을 하기보다 `"DB 최적화(인덱싱) → 애플리케이션 최적화(QueryDSL) → 인프라 최적화(Redis 캐싱)"` 순으로 병목 지점을 해결하는 것이 올바른 접근일 것이다.
+
+<aside>
+
+
+## ✅해결 과정
+
+</aside>
+
+#### **✅ Step 1: DB 최적화 (복합 인덱스 적용)**
+
+데이터 중복도(카디널리티)와 조회 조건을 고려하여, 조건에 일치하는 데이터만 스캔하도록 Novel 엔티티에 복합 인덱스를 추가했다.
+
+```java
+@Table(name = "novels",
+        indexes = {
+                @Index(name = "idx_novel_genre", columnList = "genre"),
+                @Index(name = "idx_novel_status", columnList = "status"),
+
+                // 신작 소설 조회용 복합 인덱스
+                @Index(name = "idx_novel_new_list", columnList = "is_deleted, status, genre, created_at")
+        })
+public class Novel extends BaseEntity {
+```
+
+#### **✅ Step 2: 캐싱 전략 고도화 (Look-Aside 패턴)**
+
+- 실시간성에 목매지 않아도 되는 신작 리스트의 특성을 살려, 조회 시 Redis를 먼저 확인(Cache Hit)하고 데이터가 없을 때만 DB를 조회(Cache Miss)하는 Look-Aside 패턴을 구현
+- 장르, 상태, 제한 개수(limit)를 조합한 Cache Key(`NOVEL_LIST_CACHE_KEY + "type:new::" + "genre:" + ...`)를 설계하고 적절한 TTL(30분)을 부여하여 무의미한 DB 접근을 차단했다.
+
+```java
+// 신작용 소설 목록 조회 (QueryDSL+Redis캐싱+인덱싱)
+    // 한 달 신작 리스트 (limit 50 작품)
+    @Transactional(readOnly = true)
+    public List<NovelListResponse> getNewNovelList(String genre, NovelStatus status, int limit) {
+
+        String cacheKey = NOVEL_LIST_CACHE_KEY
+                + "type:new::"
+                + "genre:" + genre + "::"
+                + "status:" + status + "::"
+                + "limit:" + limit;
+
+        // Redis 캐시 확인
+        Object cached = null;
+        try {
+            cached = redisTemplate.opsForValue().get(cacheKey);
+        } catch (RuntimeException e) {
+            log.warn("소설 리스트 캐시를 읽어내는데 실패했습니다. key={}", cacheKey, e);
+        }
+
+        if (cached != null) {
+            log.debug("===== [신작 캐시 HIT] key={} =====", cacheKey);
+            return (List<NovelListResponse>) cached; // List 타입 캐스팅
+        }
+
+        log.debug("===== [신작 캐시 MISS] key={} DB 조회 =====", cacheKey);
+
+        // 3. DB 조회 (캐시에 없을 때만)
+        List<NovelListResponse> response = novelRepository.findNewNovelList(genre, status, limit);
+
+        // 4. Redis 캐시에 결과 저장
+        try {
+            redisTemplate.opsForValue().set(cacheKey, response, NOVEL_LIST_CACHE_TTL);
+            log.debug("===== [신작 캐시 저장] key={} TTL=30분 =====", cacheKey);
+        } catch (RuntimeException e) {
+            log.warn("New novel list cache write failed. key={}", cacheKey, e);
+        }
+
+        return response;
+      }
+```
+
+#### **✅ Step 3: QueryDSL을 통한 쿼리 최적화**
+
+QueryDSL의 `Projections.constructor`를 활용하여 엔티티 전체가 아닌 DTO 형태로 꼭 필요한 필드만 Select 하도록 구성하고 Fetch Join을 통해 N+1 문제를 방지했다.
+
+```java
+// 신작용 소설 목록 조회 (한 달 신작 리스트)
+    @Override
+    public List<NovelListResponse> findNewNovelList(String genre, NovelStatus status, int limit) {
+        QNovel novel = QNovel.novel;
+        QUser user = QUser.user;
+
+        // 한 달 전 날짜 계산
+        LocalDateTime oneMonthAgo = LocalDateTime.now().minusMonths(1);
+
+        return queryFactory
+                .select(Projections.constructor(NovelListResponse.class,
+                        novel.id,
+                        novel.title,
+                        novel.genre,
+                        novel.tags,
+                        novel.status,
+                        novel.coverImageUrl,
+                        novel.viewCount,
+                        novel.bookmarkCount,
+                        user.nickname
+                        ))
+                .from(novel)
+                .join(user).on(novel.authorId.eq(user.id))
+                .where(
+                        novel.isDeleted.eq(false)
+                        , novel.status.ne(NovelStatus.PENDING)
+                        , genreEq(genre)
+                        , statusEq(status)
+                        , novel.createdAt.goe(oneMonthAgo) // 한 달 이내 신작 소설들
+                )
+                .orderBy(novel.createdAt.desc())
+                .limit(limit)
+                .fetch();
+
+    }
+```
+
+<aside>
+
+
+## ✅배운점
+
+</aside>
+
+Full Table Scan으로 인해 발생할 수 있었던 메인 페이지 병목 현상을 복합 인덱스와 QueryDSL을 통해 안전하게 방어하면서 
+
+Redis 캐시 히트율을 높임으로써 메인 페이지에 트래픽이 몰리더라도 DB에 직접적인 부하가 가지 않는 안정적인 조회 아키텍처를 구축해볼 수 있었다.
+
+그리고 무작정 파티셔닝이나 샤딩 같은 고도의 기술을 맹목적으로 도입하기보다는 **처음부터 천천히 현재 트래픽 규모에 맞는 기본기(Index + Cache)**부터 단계적으로 성능을 끌어올리는 인프라 설계를 머릿속에 새길 수 있었다.
+  
+</details>
+
 ---
 
 ### 11. 프로젝트 시연 영상
