@@ -52,7 +52,7 @@
         <b>정인호</b>
       </a>
       <br />
-        <sub>Payment<br /> Subscription<br /> Chat<br /> Notification<br /> AI Support<br /><br /><br /><br /></sub>
+        <sub>Payment<br /> Subscription<br /> Chat<br /> Notification<br /> AI Support<br /><br /><br /></sub>
     </td>
    <td align="center" width="150px">
       <a href="https://github.com/S1K1DA">
