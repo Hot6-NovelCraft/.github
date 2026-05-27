@@ -44,6 +44,8 @@
       <a href="https://github.com/SeoHana0825">
         <b>서하나</b>
       </a>
+      <br />
+        Security<br /> User<br /> Ranking<br /> Search<br /> Admin<br /> AI Recommendation
     </td>
     <td align="center" width="150px">
       <a href="https://github.com/eNoLJ">
