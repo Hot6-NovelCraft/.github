@@ -26,7 +26,13 @@
         <b>전민우</b>
       </a>
       <br />
-        Mentor, Calender, Library, Revenue, Event, Exchange, AI Cover
+        Mentor
+      Calender
+      Library
+      Revenue
+      Event
+      Exchange
+      AI Cover
     </td>
     <td align="center" width="150px">
       <a href="https://github.com/SeoHana0825">
