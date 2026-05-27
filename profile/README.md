@@ -12,6 +12,7 @@
 ---
 
 ### 1. 팀원 소개
+<div align="center">
 <table>
   <tr height="160px">
     <td align="center" width="150px">
@@ -68,6 +69,7 @@
     </td>
   </tr>
 </table>
+</div>
 
 ---
 
