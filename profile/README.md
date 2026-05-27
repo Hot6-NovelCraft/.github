@@ -856,6 +856,7 @@ https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/
 
 <details>
 <summary><b>동시성 제어 — 선착순 이벤트 정합성 보장</b></summary>
+  
 ### 1️⃣ 테스트 목적
 
 국내 웹소설 플랫폼(네이버 시리즈 MAU 280만명, 카카오페이지 MAU 464만명) 규모를 고려할 때, 선착순 이벤트 오픈 시 다수의 사용자가 동시에 참여 신청하는 상황이 빈번하게 발생한다. 동시 요청 환경에서 `maxParticipants` 제한이 정확히 지켜지는지, 중복 참여가 발생하지 않는지 검증한다.
