@@ -27,24 +27,36 @@
       </a>
     </td>
     <td align="center" width="150px">
-      <a href="https://github.com/부팀장_깃허브_아이디">
-        <img height="110px" width="110px" src="https://github.com/부팀장_깃허브_아이디.png" alt="부팀장 프로필"/>
-        <br />
-        <b>부팀장</b>
+      <a href="https://github.com/MinWoo1995">
+        <img height="110px" width="110px" src="https://github.com/MinWoo1995.png" alt="팀장 프로필"/>
+          <br />
+      </a>
+        <b>팀장</b>
+          <br />
+      <a href="https://github.com/MinWoo1995">
+        <b>전민우</b>
       </a>
     </td>
     <td align="center" width="150px">
-      <a href="https://github.com/팀원1_깃허브_아이디">
-        <img height="110px" width="110px" src="https://github.com/팀원1_깃허브_아이디.png" alt="팀원1 프로필"/>
-        <br />
-        <b>팀원</b>
+      <a href="https://github.com/MinWoo1995">
+        <img height="110px" width="110px" src="https://github.com/MinWoo1995.png" alt="팀장 프로필"/>
+          <br />
+      </a>
+        <b>팀장</b>
+          <br />
+      <a href="https://github.com/MinWoo1995">
+        <b>전민우</b>
       </a>
     </td>
-    <td align="center" width="150px">
-      <a href="https://github.com/팀원2_깃허브_아이디">
-        <img height="110px" width="110px" src="https://github.com/팀원2_깃허브_아이디.png" alt="팀원2 프로필"/>
-        <br />
-        <b>팀원</b>
+   <td align="center" width="150px">
+      <a href="https://github.com/MinWoo1995">
+        <img height="110px" width="110px" src="https://github.com/MinWoo1995.png" alt="팀장 프로필"/>
+          <br />
+      </a>
+        <b>팀장</b>
+          <br />
+      <a href="https://github.com/MinWoo1995">
+        <b>전민우</b>
       </a>
     </td>
   </tr>
