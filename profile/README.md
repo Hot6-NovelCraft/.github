@@ -20,6 +20,7 @@
         <img height="110px" width="110px" src="https://github.com/MinWoo1995.png" alt="팀장 프로필"/>
         <br />
         <b>팀장</b>
+        <br />
         <b>전민우</b>
       </a>
     </td>
