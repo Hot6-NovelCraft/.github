@@ -64,6 +64,8 @@
       <a href="https://github.com/S1K1DA">
         <b>정은식</b>
       </a>
+     <br />
+        <sub>Novel<br /> Episode<br /> Mentorship<br /> Report<br /> AI Review<br /><br /><br /></sub>
     </td>
   </tr>
 </table>
