@@ -27,36 +27,36 @@
       </a>
     </td>
     <td align="center" width="150px">
-      <a href="https://github.com/MinWoo1995">
-        <img height="110px" width="110px" src="https://github.com/MinWoo1995.png" alt="팀장 프로필"/>
+      <a href="https://github.com/SeoHana0825">
+        <img height="110px" width="110px" src="https://github.com/SeoHana0825.png" alt="팀원 프로필"/>
           <br />
       </a>
-        <b>팀장</b>
+        <b>팀원</b>
           <br />
-      <a href="https://github.com/MinWoo1995">
-        <b>전민우</b>
+      <a href="https://github.com/SeoHana0825">
+        <b>서하나</b>
       </a>
     </td>
     <td align="center" width="150px">
-      <a href="https://github.com/MinWoo1995">
-        <img height="110px" width="110px" src="https://github.com/MinWoo1995.png" alt="팀장 프로필"/>
+      <a href="https://github.com/eNoLJ">
+        <img height="110px" width="110px" src="https://github.com/eNoLJ.png" alt="팀원 프로필"/>
           <br />
       </a>
-        <b>팀장</b>
+        <b>팀원</b>
           <br />
-      <a href="https://github.com/MinWoo1995">
-        <b>전민우</b>
+      <a href="https://github.com/eNoLJ">
+        <b>정인호</b>
       </a>
     </td>
    <td align="center" width="150px">
-      <a href="https://github.com/MinWoo1995">
-        <img height="110px" width="110px" src="https://github.com/MinWoo1995.png" alt="팀장 프로필"/>
+      <a href="https://github.com/S1K1DA">
+        <img height="110px" width="110px" src="https://github.com/S1K1DA.png" alt="팀원 프로필"/>
           <br />
       </a>
-        <b>팀장</b>
+        <b>팀원</b>
           <br />
-      <a href="https://github.com/MinWoo1995">
-        <b>전민우</b>
+      <a href="https://github.com/S1K1DA">
+        <b>정은식</b>
       </a>
     </td>
   </tr>
