@@ -4,7 +4,7 @@
 
 <br>
 
-# 🪄 Hot6-NovelCraft 실시간 웹소설 플랫폼
+# Hot6-NovelCraft 실시간 웹소설 플랫폼
 ## <p align="center"><b>누구나 작가가 되는 세상, 이야기가 빛나는 공간</b></p>
 <p align="center">
   <img width="4000" height="2828" alt="Image" src="https://github.com/user-attachments/assets/19bf68c2-8486-45f2-8a71-096e0ea94cb9" />
