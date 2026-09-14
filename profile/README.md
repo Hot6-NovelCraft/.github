@@ -194,7 +194,7 @@ NovelCraft 는 독자와 작가 모두를 위한 웹소설 양성 플랫폼입�
 ---
 
 ## 4. 아키텍처
-<img width="2948" height="1981" alt="Image" src="https://github.com/user-attachments/assets/8713d64d-3d22-4b8f-970e-9a65145d20d1" />
+<img width="2948" height="1981" alt="Image" src="https://github.com/user-attachments/assets/112d7e7a-ce3b-4dff-9727-be51f1b65515" />
 <a href="https://cacoo.com/diagrams/dkxibDW7JyEEE8hj/BE544" target="_blank">
   아키텍처 원본 링크
 </a>
